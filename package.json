@@ -1,0 +1,21 @@
+{
+  "name": "@ultimategg/logging",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/index.js",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "build": "npx tsc",
+    "dev": "nodemon src/test.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
