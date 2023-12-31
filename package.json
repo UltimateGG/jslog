@@ -1,6 +1,6 @@
 {
   "name": "@ultimategg/logging",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -9,7 +9,7 @@
     "dist/index.js"
   ],
   "scripts": {
-    "build": "npx tsc",
+    "build": "npx tsc && npx terser --compress --output ./dist/index.js -- ./dist/index.js",
     "dev": "nodemon src/test.ts"
   },
   "keywords": [],
@@ -17,6 +17,7 @@
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^3.0.2",
+    "terser": "^5.26.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
