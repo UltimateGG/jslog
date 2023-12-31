@@ -18,17 +18,17 @@ setInterval(() => {
   currentLogFile = `./logs/${getDate().replace(/\//g, '-')}.log`;
 }, 5 * 60 * 1000);
 
-const logInfo = async (msg: string, ...args: any[]) => pipeLog(LogType.INFO, msg, ...args);
-const logWarn = async (msg: string, ...args: any[]) => pipeLog(LogType.WARN, msg, ...args);
-const logError = async (msg: string, ...args: any[]) => pipeLog(LogType.ERROR, msg, ...args);
+const logInfo = async (...args: any[]) => pipeLog(LogType.INFO, ...args);
+const logWarn = async (...args: any[]) => pipeLog(LogType.WARN, ...args);
+const logError = async (...args: any[]) => pipeLog(LogType.ERROR, ...args);
 
 
-const pipeLog = (prefix: LogType, msg: string, ...args: any[]) => {
+const pipeLog = (prefix: LogType, ...args: any[]) => {
   const diff = Math.round((Date.now() - (lastLogTime)) / 1000);
   const diffString = `D: ${diff > 60 ? Math.round(diff / 60)+'m' : diff+'s'}`;
 
-  console[getFunc(prefix)](`[${prefix}]: ${msg}`, ...args);
-  fs.appendFileSync(currentLogFile, `[${getTimestamp()} | ${diffString}] [${prefix}]: ${msg} ${args.map(formatArg).join(' ')}\n`);
+  console[getFunc(prefix)](`[${prefix}]:`, ...args);
+  fs.appendFileSync(currentLogFile, `[${getTimestamp()} | ${diffString}] [${prefix}]: ${args.map(formatArg).join(' ')}\n`);
   lastLogTime = Date.now();
 }
 
