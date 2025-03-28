@@ -7,25 +7,24 @@ enum LogType {
   ERROR = 'ERROR/FATAL'
 }
 
-let currentLogFile = `./logs/${new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/\//g, '-')}.log`;
 let lastLogTime = Date.now();
 
 if (!fs.existsSync('./logs')) fs.mkdirSync('./logs');
-
-// Every 5 min check to make a new log
-setInterval(() => {
-  currentLogFile = `./logs/${getDate().replace(/\//g, '-')}.log`;
-}, 5 * 60 * 1000);
 
 const logInfo = async (...args: any[]) => pipeLog(LogType.INFO, ...args);
 const logWarn = async (...args: any[]) => pipeLog(LogType.WARN, ...args);
 const logError = async (...args: any[]) => pipeLog(LogType.ERROR, ...args);
 
 const pipeLog = (prefix: LogType, ...args: any[]) => {
+  const date = new Date();
+  const dateStr = date.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }).replace(/\//g, '-');
   const diffString = `D: ${ms(Math.round(Date.now() - lastLogTime))}`;
 
   console[getFunc(prefix)](`[${prefix}]:`, ...args);
-  fs.appendFileSync(currentLogFile, `[${getTimestamp()} | ${diffString}] [${prefix}]: ${args.map(formatArg).join(' ')}\n`);
+  fs.appendFileSync(
+    `./logs/${dateStr}.log`,
+    `[${dateStr} ${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })} | ${diffString}] [${prefix}]: ${args.map(formatArg).join(' ')}\n`
+  );
   lastLogTime = Date.now();
 };
 
@@ -48,10 +47,4 @@ const formatArg = (arg: any) => {
   return arg;
 };
 
-const getTimestamp = () => `${getDate()} ${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}`;
-
-function getDate() {
-  return new Date().toLocaleDateString('en-US');
-}
-
-export { LogType, logInfo, logWarn, logError, getTimestamp, getDate };
+export { LogType, logInfo, logWarn, logError };
